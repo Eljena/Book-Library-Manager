@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="icon" type="image/x-icon" href="/img/buecher.ico">
+    <title>Buch bearbeiten</title>
+</head>
+<body>
+  <div class="container py-4">
+    <header class="pb-3 mb-4 border-bottom d-flex justify-content-center align-items-center">
+      <a href="/" class="d-flex align-items-center text-body-emphasis text-decoration-none">
+        <h3 class="bold">Meine Büchersammlung</h3>
+      </a>
+    </header>
+
+    <!--Breadcrumbs-->
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/" class="breadcrumb-link">Home</a></li>
+        <li class="breadcrumb-item"><a th:href="@{/library}" class="breadcrumb-link">Büchersammlung</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Buch hinzufügen</li>
+      </ol>
+    </nav>
+
+
+    <div class="p-5 mb-4 bg-body-tertiary rounded-3">
+      <div class="container-fluid py-1">
+        <h4>Buch bearbeiten</h4>
+
+        <!--Eingabeformular-->
+        <form th:action="@{/updateBook/{id}(id=${book.id})}" method="post" enctype="multipart/form-data">
+          <div class="mb-3">
+              <label for="title" class="form-label">Titel:</label>
+              <input type="text" class="form-control" name="title" id="title" th:value="${book.title}">
+            </div>
+
+          <div class="mb-3">
+            <label for="author" class="form-label">Autor*in:</label>
+            <input type="text" class="form-control" name="author" id="author" th:value="${book.author}">
+          </div>
+
+          <div class="mb-3">
+            <label for="publishYear" class="form-label">Veröffentlichungsjahr:</label>
+            <input type="number" class="form-control" name="publishYear" id="publishYear" th:value="${book.publishYear}">
+          </div>
+
+          <div class="mb-3">
+            <label for="pages">Seitenanzahl:</label>
+            <input type="number" class="form-control" name="pages" id="pages" th:value="${book.pages}">
+          </div>
+          <!--Buchcover-->
+          <div class="mb-3">
+            <label for="formFileLg" class="form-label">Buchcover hochladen</label>
+            <input class="form-control" type="file" id="formFileLg" name="imageFile" accept="image/*">
+          </div>
+
+          <div class="mb-3">
+            <!--Vorschaubild des aktuellen Buchcovers-->
+            <label class="form-label" for="bookcover">Aktuelles Buchcover:</label>
+            <div th:if="${book.bookcover}">
+              <img th:src="@{'/uploads/' + ${book.bookcover}}" id="bookcover" th:alt="${book.title}" width="150px">
+            </div>
+          </div>
+
+          <!-- Verstecktes Feld, um das alte Buchcover zu speichern -->
+          <input type="hidden" name="existingBookcover" th:value="${book.bookcover}">
+
+          <!--Gelesen/Nicht gelesen-->
+          <div class="mb-3">
+            <label for="read" class="form-label">Hast du das Buch bereits gelesen?</label>
+            <select class="form-select form-select-md mb-3" id="read" name="read" required>
+              <option value="" disabled>Wähle eine Option aus</option>
+              <option th:selected="${book.read == true}" value="true">gelesen</option>
+              <option th:selected="${book.read == false}" value="false">nicht gelesen</option>
+            </select>
+          </div>
+
+          <div class="py-3 d-flex gap-3">
+            <input type="submit" class="btn btn-success" value="Speichern">
+            <a th:href="@{/library}" class="btn btn-danger">Abbrechen</a>
+          </div>
+
+
+        </form>
+      </div>
+    </div>
+
+
+  </div>
+  <!-- Bootstrap JS -->
+  <script src="/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+</body>
+</html>

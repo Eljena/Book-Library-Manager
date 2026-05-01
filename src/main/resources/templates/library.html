@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/bootstrap.css" rel="stylesheet">
+    <link href="/css/library.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="icon" type="image/x-icon" href="/img/buecher.ico">
+    <title>Büchersammlung</title>
+</head>
+<body>
+    <div class="container py-4">
+        <!--Header-Bereich-->
+        <header class="pb-3 mb-4 border-bottom d-flex justify-content-center align-items-center">
+            <a href="/" class="d-flex align-items-center text-body-emphasis text-decoration-none">
+                <h3 class="bold">Meine Büchersammlung</h3>
+            </a>
+        </header>
+        <!--Breadcrumbs-->
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/" class="breadcrumb-link">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Büchersammlung</li>
+            </ol>
+        </nav>
+
+        <!--Body-Bereich-->
+        <div class="d-flex align-items-center justify-content-between py-3">
+            <!--Neues Buch hinzufügen Button-->
+            <a th:href="@{/addBook}" class="btn btn-success my-2">+ Neues Buch hinzufügen</a>
+            <!--Anzahl Bücher-->
+            <h4 th:text="'Anzahl Bücher: ' + ${bookCount}">Bücheranzahl</h4>
+            <!--Filtern und Sortieren Modal öffnen-->
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#filterSearchModal">
+                <i class="fa fa-sliders"></i>
+                Filtern und Sortieren
+            </button>
+
+            <!-- Modal-Fenster Sortieren und Filtern -->
+            <div class="modal fade" id="filterSearchModal" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Filtern und Sortieren</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <form method="get">
+                            <div class="modal-body">
+                                <!--Sortieren nach-->
+                                <div class="mb-3">
+                                    <label for="sortBy" class="form-label fw-bold">Sortieren nach:</label>
+                                    <div class="input-group">
+                                        <select class="form-select form-select-md" id="sortBy" name="sortBy">
+                                            <option value="">keine Auswahl</option>
+                                            <option value="read" th:selected="${sortBy == 'read'}">Gelesen</option>
+                                            <option value="notRead" th:selected="${sortBy == 'notRead'}">Nicht gelesen</option>
+                                            <option value="title" th:selected="${sortBy == 'title'}">Titel [A-z]</option>
+                                            <option value="author" th:selected="${sortBy == 'author'}">Autor [A-z]</option>
+                                            <option value="pages" th:selected="${sortBy == 'pages'}">Anzahl der Seiten &#8593;</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <!--Filtern nach Titel und Autor*innen-->
+                                    <label for="searchQuery" class="form-label fw-bold">Nach Titel oder Autor*innen filtern</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="searchQuery" id="searchQuery" th:value="${searchQuery}">
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <!--Filtern nach gelesen-->
+                                    <fieldset>
+                                        <legend class="form-label fw-bold fs-6">Nur bestimmte Bücher anzeigen:</legend>
+                                        <div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="bookStatus" value=""
+                                                       id="noCheck" th:checked="${bookStatus == null}">
+                                                <label class="form-check-label" for="noCheck">keine Auswahl</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="bookStatus" value="true"
+                                                       id="checkRead" th:checked="${bookStatus == true}">
+                                                <label class="form-check-label" for="checkRead">gelesen</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="bookStatus" value="false"
+                                                       id="checkNotRead" th:checked="${bookStatus == false}">
+                                                <label class="form-check-label" for="checkNotRead">nicht gelesen</label>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+
+
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Abbrechen</button>
+                                <button type="submit" class="btn btn-success">Anwenden</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+
+        <!--Buchsammlung-->
+        <div class="album py-5 bg-body-tertiary rounded-3">
+            <div class="container">
+                <div class="row row-cols-1 row-cols-md-1 row-cols-lg-2 row-cols-xl-3 g-3">
+                    <div class="col" th:each="book : ${books}">
+                        <div th:if="${books}" class="card shadow-sm">
+                            <div class="position-relative">
+                                <!--Badges in der oberen rechten Ecke-->
+                                <div class="badges">
+                                    <span th:if="${book.read}" class="badge bg-success-subtle border border-success-subtle text-success-emphasis rounded-pill">Gelesen</span>
+                                    <span th:unless="${book.read}" class="badge bg-danger-subtle border border-danger-subtle text-danger-emphasis rounded-pill">Nicht gelesen</span>
+                                </div>
+                                <!--Buchbilder-->
+                                <div class="book-cover-container" th:if="${book.bookcover}">
+                                    <img class="bd-placeholder-img card-img-top" th:src="@{'/uploads/' + ${book.bookcover}}" th:alt="${book.title}" width="400" height="300">
+                                </div>
+                                <!--Overlay (wenn Buch gelesen wurde)-->
+                                <div th:if="${book.read}" class="overlay"></div>
+                            </div>
+
+                            <div class="card-body">
+                                <h5 class="card-title" th:text="${book.title}">Buchtitel</h5>
+                                <small class="text-body-secondary" th:text="${book.publishYear}">Veröffentlichungsjahr</small>
+                                <p class="card-text" th:text="${book.author}">Autor</p>
+
+                                <div class="d-flex flex-wrap justify-content-between align-items-center">
+                                    <div class="btn-group mb-3">
+                                        <a class="btn btn-sm btn-outline-success" th:href="@{/bookDetails(id=${book.id})}">Details anzeigen</a>
+                                        <a class="btn btn-sm btn-outline-success" th:href="@{/updateBook(id=${book.id})}">Buch bearbeiten</a>
+                                    </div>
+
+                                    <!--Löschen Button-->
+                                    <button type="button" class="btn btn-danger mb-3" data-bs-toggle="modal" th:data-bs-target="'#deleteModal' + ${book.id}">
+                                        <i class="fa fa-trash-o"></i>
+                                        Löschen
+                                    </button>
+
+                                    <!--Löschen Modalfenster-->
+                                    <div class="modal fade" th:id="'deleteModal' + ${book.id}" tabindex="-1">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Buch löschen</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>Bist du sicher, dass du das Buch<strong th:text="' &quot;' + ${book.title} + '&quot; '"></strong>löschen möchtest?</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
+                                                    <form th:action="@{/delete/{id}(id=${book.id})}" method="post">
+                                                        <button type="submit" class="btn btn-danger">Löschen</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bei leerer Liste -->
+                <div th:if="${#lists.isEmpty(books)}">
+                    <h2 class="text-center">Es wurden keine Bücher gefunden</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Bootstrap JS -->
+    <script src="/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/bootstrap.js"></script>
+
+</body>
+</html>

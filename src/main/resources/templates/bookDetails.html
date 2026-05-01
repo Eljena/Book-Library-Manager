@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link href="/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/css/bootstrap.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="icon" type="image/x-icon" href="/img/buecher.ico">
+  <title>Büchersammlung</title>
+</head>
+<body>
+
+
+    <div class="container py-4">
+      <!--Header-Bereich-->
+      <header class="pb-3 mb-4 border-bottom d-flex justify-content-center align-items-center">
+        <a href="/" class="d-flex align-items-center text-body-emphasis text-decoration-none">
+          <!--<img src="/img/buecher.png" alt="Logo" width="30" height="24" class="me-2">-->
+          <h3 class="bold">Meine Büchersammlung</h3>
+        </a>
+      </header>
+      <!--Breadcrumbs-->
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/" class="breadcrumb-link">Home</a></li>
+          <li class="breadcrumb-item"><a th:href="@{/library}" class="breadcrumb-link">Büchersammlung</a></li>
+          <li class="breadcrumb-item active" aria-current="page" th:text="${book.title}">Buchtitel</li>
+        </ol>
+      </nav>
+
+      <!--Body-Bereich-->
+      <div class="album py-4 bg-light">
+        <div class="container">
+          <div class="row">
+            <div class="text-end">
+              <span th:if="${book.read}" class="badge bg-success-subtle border border-success-subtle text-success-emphasis rounded-pill">Gelesen</span>
+              <span th:unless="${book.read}" class="badge bg-danger-subtle border border-danger-subtle text-danger-emphasis rounded-pill">Nicht gelesen</span>
+            </div>
+
+            <div class="col text-center">
+              <img th:src="@{'/uploads/' + ${book.bookcover}}" th:alt="${book.title}" width="250px">
+            </div>
+            <div class="col-7 border-start">
+              <h3 th:text="${book.title}">Buchtitel</h3>
+              <div>
+                <span class="fw-bold">Autor*in</span>
+                <p th:text="${book.author}">Autor</p>
+              </div>
+              <div>
+                <span class="fw-bold">Seitenanzahl</span>
+                <p th:text="${book.pages}">Seitenanzahl</p>
+              </div>
+              <div>
+                <span class="fw-bold">Veröffentlichungsjahr</span>
+                <p th:text="${book.publishYear}">Veröffentlichungsjahr</p>
+              </div>
+
+
+            </div>
+
+            <div class="text-end">
+              <a th:href="@{/updateBook(id=${book.id})}" class="btn btn-success">
+                <i class="fa fa-pencil"></i>
+                Bearbeiten
+              </a>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+
+    </div>
+    <!-- Bootstrap JS -->
+    <script src="/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/bootstrap.js"></script>
+</body>
+</html>

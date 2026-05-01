@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/bootstrap.css" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="/img/buecher.ico">
+    <title>Büchersammlung</title>
+</head>
+<body>
+  <section class="py-5 text-center container">
+    <div class="row py-lg-5">
+      <div class="col-lg-6 col-md-8 mx-auto">
+        <h1 class="fw-light">Willkommen zu deiner persönlichen Büchersammlung!</h1>
+        <p class="lead text-body-secondary">Hier kannst du neue Bücher anlegen oder deine Bücher als gelesen/nicht gelesen markieren.</p>
+        <p>
+          <a th:href="@{/addBook}" class="btn btn-success my-2">+ Neues Buch hinzufügen</a>
+          <a th:href="@{/library}" class="btn btn-dark my-2">Alle Bücher anzeigen</a>
+        </p>
+      </div>
+    </div>
+    <img src="/img/reading.gif" alt="Lesende Eule" style="width: 50%;">
+  </section>
+  <!-- Bootstrap JS -->
+  <script src="/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+</body>
+</html>
