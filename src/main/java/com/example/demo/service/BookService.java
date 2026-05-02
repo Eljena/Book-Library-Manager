@@ -138,13 +138,13 @@ public class BookService {
      */
     public List<Book> getFilteredAndSortedBooks(Boolean bookStatus, String sortBy, String searchQuery) {
         //Alle Bücher abrufen
-        List<Book> books = StreamSupport.stream(bookRepository.findAll().spliterator(), false).toList();
+        List<Book> books = new ArrayList<>(StreamSupport.stream(bookRepository.findAll().spliterator(), false).toList());
 
         //Filtern nach Titel oder Autor
-        books = filterBooksByTitleOrAuthor(books, searchQuery);
+        books = new ArrayList<>(filterBooksByTitleOrAuthor(books, searchQuery));
 
         //Filtern nach Buchstatus (gelesen/nicht gelesen)
-        books = filterBooksByReadStatus(books, bookStatus);
+        books = new ArrayList<>(filterBooksByReadStatus(books, bookStatus));
 
         //Sortieren nach Sortierkriterium
         sortBooks(books, sortBy);
