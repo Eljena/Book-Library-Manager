@@ -27,10 +27,12 @@ Eine Webanwendung zur Verwaltung von Büchern mit vollständigen CRUD-Funktional
 ## Über das Projekt
 
 Dieses Projekt entstand während meiner Tätigkeit als Werkstudentin in der Softwareentwicklung. Ziel war die praktische Anwendung von Spring Boot — insbesondere der Schichtenarchitektur (Controller, Service, Repository) sowie der Integration einer relationalen Datenbank mit Spring Data JPA.
+
 ---
 
 ## Entwicklerin
 
 **Eljena** - Masterstudentin Medieninformatik, TH Lübeck
 UX/UI Design · Frontend Development · Full-Stack
+
 ---
