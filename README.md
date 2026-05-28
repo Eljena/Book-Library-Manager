@@ -50,7 +50,7 @@ Bücherdetailseite:
 
 ## Entwicklerin
 
-**Eljena Trüschel**
+**Eljena Trüschel**  
 B.Sc. Medieninformatik – TH Lübeck  
 Frontend Development · Full-Stack · UI/UX Design
 
