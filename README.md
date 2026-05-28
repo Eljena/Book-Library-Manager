@@ -32,7 +32,7 @@ Dieses Projekt entstand während meiner Tätigkeit als Werkstudentin in der Soft
 
 ## Entwicklerin
 
-**Eljena** - Masterstudentin Medieninformatik, TH Lübeck
+**Eljena** - B.Sc. Medieninformatik, TH Lübeck
 UX/UI Design · Frontend Development · Full-Stack
 
 ---
