@@ -25,7 +25,6 @@ public class BookService {
 
     private final BookRepository bookRepository;
 
-    //Dependency Injection durch den Konstruktor
     @Autowired
     public BookService(BookRepository bookRepository){
         this.bookRepository = bookRepository;
@@ -63,7 +62,6 @@ public class BookService {
      * @param updatedBook
      */
     public void update(Long id, Book updatedBook) {
-        //Buch direkt aktualisieren, falls vorhanden
         bookRepository.findById(id).ifPresent(existingBook -> {
             existingBook.setTitle(updatedBook.getTitle());
             existingBook.setAuthor(updatedBook.getAuthor());
@@ -72,7 +70,6 @@ public class BookService {
             existingBook.setBookcover(updatedBook.getBookcover());
             existingBook.setRead(updatedBook.isRead());
 
-            //Speichern der Änderungen
             bookRepository.save(existingBook);
         });
     }
@@ -82,33 +79,25 @@ public class BookService {
      */
     public String handleImageUpload(MultipartFile imageFile, String existingBookcover) throws IOException {
         if (!imageFile.isEmpty()) {
-            //Basispfad, in dem die Bilder gespeichert werden sollen
             String uploadDir = "uploads/";
 
-            //Verzeichnis erstellen, falls es nicht existiert
             Path uploadPath = Paths.get(uploadDir);
             if (!Files.exists(uploadPath)) {
                 Files.createDirectories(uploadPath);
             }
 
-            //Dateinamen speichern
             String fileName = imageFile.getOriginalFilename();
 
-            //Den vollständigen Pfad erstellen
             Path filePath = Paths.get(uploadDir + fileName);
 
-            //Datei speichern
             Files.copy(imageFile.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
-            //Relativen Pfad zurückgeben
             return fileName;
         }
-        //Bestehendes Buchcover beibehalten, falls kein neues Bild hochgeladen wurde
-        //null prüft auf Vorhandensein & isEmpty den Inhalt
+
         if(existingBookcover != null && !existingBookcover.isEmpty()){
             return existingBookcover;
         }
-        //Standard-Bild zurückgeben, falls kein Bild hochgeladen wurde
         return "no_cover.png";
     }
 
@@ -137,16 +126,12 @@ public class BookService {
      * @return
      */
     public List<Book> getFilteredAndSortedBooks(Boolean bookStatus, String sortBy, String searchQuery) {
-        //Alle Bücher abrufen
         List<Book> books = new ArrayList<>(StreamSupport.stream(bookRepository.findAll().spliterator(), false).toList());
 
-        //Filtern nach Titel oder Autor
         books = new ArrayList<>(filterBooksByTitleOrAuthor(books, searchQuery));
 
-        //Filtern nach Buchstatus (gelesen/nicht gelesen)
         books = new ArrayList<>(filterBooksByReadStatus(books, bookStatus));
 
-        //Sortieren nach Sortierkriterium
         sortBooks(books, sortBy);
 
         return books;
@@ -160,13 +145,6 @@ public class BookService {
 
         searchQuery = searchQuery.trim();   //entfernt Leerzeichen am Anfang und Ende eines Strings
         if(!searchQuery.isEmpty()){
-            /*For-Schleife ist in ursprünglicher Version*/
-//            for(Book book : books){
-//                if(book.getTitle().toLowerCase().contains(searchQuery.toLowerCase()) ||
-//                        book.getAuthor().toLowerCase().contains(searchQuery.toLowerCase())){
-//                    filteredBooks.add(book);
-//                }
-//            }
             String finalSearchQuery = searchQuery;
             filteredBooks = books
                     .stream()
@@ -185,21 +163,6 @@ public class BookService {
      * @return
      */
     public List<Book> filterBooksByReadStatus(List<Book> books, Boolean bookStatus){
-        /*For-Schleife ist in ursprünglicher Version*/
-//        List<Book> filteredBooks = new ArrayList<>();
-
-//        for (Book book : books) {
-//            if (bookStatus == null) {
-//                //Wenn bookStatus null ist, alle Bücher zurückgeben
-//                filteredBooks.add(book);
-//            } else if(bookStatus == book.isRead()) {
-//                //Wenn bookStatus book.isRead() true ist, nur gelesene Bücher hinzufügen
-//                //Wenn bookStatus und book.isRead() false ist, nur nicht gelesene Bücher hinzufügen
-//                filteredBooks.add(book);
-//            }
-//        }
-//        return filteredBooks;
-
         return  books
                 .stream()
                 .filter(book -> bookStatus == null || bookStatus == book.isRead())

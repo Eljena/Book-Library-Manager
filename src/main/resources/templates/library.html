@@ -11,7 +11,6 @@
 </head>
 <body>
     <div class="container py-4">
-        <!--Header-Bereich-->
         <header class="pb-3 mb-4 border-bottom d-flex justify-content-center align-items-center">
             <a href="/" class="d-flex align-items-center text-body-emphasis text-decoration-none">
                 <h3 class="bold">Meine Büchersammlung</h3>
@@ -27,11 +26,11 @@
 
         <!--Body-Bereich-->
         <div class="d-flex align-items-center justify-content-between py-3">
-            <!--Neues Buch hinzufügen Button-->
+
             <a th:href="@{/addBook}" class="btn btn-success my-2">+ Neues Buch hinzufügen</a>
-            <!--Anzahl Bücher-->
+
             <h4 th:text="'Anzahl Bücher: ' + ${bookCount}">Bücheranzahl</h4>
-            <!--Filtern und Sortieren Modal öffnen-->
+
             <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#filterSearchModal">
                 <i class="fa fa-sliders"></i>
                 Filtern und Sortieren

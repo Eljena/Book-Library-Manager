@@ -21,23 +21,22 @@ import org.springframework.web.multipart.MultipartFile;
  * die entsprechende Antwort zu liefern
  */
 @Controller
-@Transactional //stellt sicher, dass wenn alles in der Methode richtig ausgeführt wird, Daten persistent gespeichert werden, oder bei einem Fehler zurückgesetzt
+@Transactional
 public class BookController {
 
-    @Autowired
-    private BookService bookService;
+    private final BookService bookService;
 
-    //Startseite
+    public BookController(BookService bookService) {
+        this.bookService = bookService;
+    }
+
     @GetMapping("/")
     public String showIndexPage(){
-        //View index zurückgeben, um Startseite anzuzeigen
         return "index";
     }
 
-    //Seite zum Hinzufügen eines Buches
     @GetMapping("/addBook")
     public String showAddBook(){
-        //View addBook zurückgeben, um "Buch hinzufügen"-Seite anzuzeigen
         return "addBook";
     }
 
@@ -46,26 +45,19 @@ public class BookController {
      */
     @GetMapping("/bookDetails")
     public String showBookDetails(@RequestParam("id") Long id, Model model){
-        //Buch anhand der ID aus der DB abrufen
         Book book = bookService.getBookById(id);
 
-        //Buchdaten ins Model packen, um Details des Buches anzuzeigen
         model.addAttribute("book", book);
 
-        //View bookDetails zurückgeben, um die Buchdetails anzuzeigen
         return "bookDetails";
     }
 
-    //Seite zum Bearbeiten des Buches
     @GetMapping("/updateBook")
     public String showUpdateBook(@RequestParam("id") Long id, Model model){
-        // Buch anhand der ID aus der Datenbank abrufen
         Book book = bookService.getBookById(id);
 
-        //Buchdaten ins Model packen, um im Formular angezeigt zu werden
         model.addAttribute("book", book);
 
-        //View "updateBook" zurückgeben, um das Bearbeitungsformular anzuzeigen
         return "updateBook";
     }
 
@@ -77,13 +69,10 @@ public class BookController {
                             @RequestParam(required = false, defaultValue = "") String sortBy,
                             @RequestParam(required = false, defaultValue = "") Boolean bookStatus,
                             @RequestParam(required = false, defaultValue = "") String searchQuery) {
-        //Anzahl der Bücher ermitteln
         long bookCount = bookService.numberOfBooks();
 
-        //Gefilterte und sortierte Bücher aus dem Service abrufen
         List<Book> books = bookService.getFilteredAndSortedBooks(bookStatus, sortBy, searchQuery);
 
-        //Daten in das Model packen, um in der Buch-Übersichtseite angezeigt zu werden
         model.addAttribute("books", books);
         model.addAttribute("sortBy", sortBy);
         model.addAttribute("searchQuery", searchQuery);
@@ -98,11 +87,9 @@ public class BookController {
     @PostMapping("/library")
     public String createBook(@ModelAttribute Book book,
                              @RequestParam("imageFile") MultipartFile imageFile) throws IOException {
-        //Bild-Upload behandeln und Dateinamen speichern
         String fileName = bookService.handleImageUpload(imageFile, null);
         book.setBookcover(fileName);
 
-        //Buch speichern
         bookService.add(book);
         return "redirect:/library";
     }
@@ -114,14 +101,11 @@ public class BookController {
     public String updateBook(@PathVariable Long id, @ModelAttribute Book book,
                              @RequestParam("imageFile") MultipartFile imageFile,
                              @RequestParam("existingBookcover") String existingBookcover) throws IOException{
-        //ID des Buches setzen
         book.setId(id);
 
-        //Bild-Upload behandeln und Dateinamen speichern
         String fileName = bookService.handleImageUpload(imageFile, existingBookcover);
         book.setBookcover(fileName);
 
-        //Buch aktualisieren
         bookService.update(id, book);
         return "redirect:/library";
     }
