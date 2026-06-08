@@ -21,6 +21,11 @@ public class AuthController {
         return "login";
     }
 
+    @PostMapping("/logout")
+    public String logoutUser(){
+        return "redirect:/login?logout";
+    }
+
     @GetMapping("/register")
     public String showRegistrationForm(){
         return "register";

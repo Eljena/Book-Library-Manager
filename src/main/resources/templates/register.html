@@ -2,27 +2,54 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/bootstrap.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <title>Registrieren</title>
 </head>
 <body>
-  <h1>Registrieren</h1>
-  <form th:action="@{/register}" method="post">
-    <label>
-      Benutzername:
-      <input name="username" type="text" required>
-    </label>
+  <header>
+    <nav class="py-3">
+      <div class="container d-flex justify-content-between align-items-center">
+        <a class="navbar-brand fw-bold fs-4" th:href="@{/}"><i class="fa-solid fa-book"></i> Meine Büchersammlung</a>
+        <a class="btn btn-dark" th:href="@{/login}">Einloggen</a>
+      </div>
+    </nav>
+  </header>
 
-    <label>
-      E-Mail-Adresse:
-      <input name="email" type="text" required>
-    </label>
+  <main>
+    <div class="d-flex justify-content-center align-items-start vh-100">
+      <div class="card p-4" style="width: 400px;">
+        <h1 class="card-title">Registrieren</h1>
+        <form th:action="@{/register}" method="post">
+          <div class="d-flex flex-column gap-2">
+            <div class="form-group">
+              <label for="username">Benutzername</label>
+              <input type="text" class="form-control" id="username" name="username" required>
+            </div>
 
-    <label>
-      Passwort:
-      <input name="password" type="password" required>
-    </label>
+            <div class="form-group">
+              <label for="email">E-Mail-Adresse</label>
+              <input type="text" class="form-control" id="email" name="email" required>
+            </div>
 
-    <button type="submit">Registrieren</button>
-  </form>
+            <div class="form-group">
+              <label for="password">Passwort</label>
+              <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+
+            <div class="form-group mt-5">
+              <button type="submit" class="btn btn-primary">Registrieren</button>
+            </div>
+
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <!-- Bootstrap JS -->
+  <script src="/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
 </body>
 </html>
